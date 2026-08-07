@@ -1,0 +1,13 @@
+section{
+    background-color: #ccc;
+    height: 100px;
+    padding: 20px;
+    text-align: center;
+
+}
+
+p{
+    color: black;
+    font-family: Georgia;
+    font-size: 30px;
+}
