@@ -1,12 +1,10 @@
-.root{
-    --color-primary: rgba(50, 160, 65, 1);
-    --color-branco: rgba(255, 255, 255, 1);
-    --fundo-claro: #f5f5f5;
-    --cfundo-neutro: #ccc;
-    --texto: #333;
-    --texto-preto: black;
+.container{
+    margin: 20px auto;
+    max-width: 800px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
 
-    --spacing-pequeno: 10px;
-    --spacing-medio: 15px;
-    --spacing-grande: 20px;
+h2{
+    color: #2f9e41;
 }

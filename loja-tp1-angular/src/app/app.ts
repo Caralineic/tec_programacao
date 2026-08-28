@@ -15,8 +15,11 @@ import { ListaProdutos } from "./features/produtos/lista-produtos/lista-produtos
   styleUrl: './app.css'
 })
 export class App {
+
   protected readonly title = signal('loja-tp1-angular');
   sobre?: string;
+
+  x = signal(11);
 
   receberSobre(msg: string):void{
     this.sobre = msg;

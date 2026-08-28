@@ -2,8 +2,13 @@
 
 <!--<app-banner></app-banner>-->
 <main class="container">
+  @if(x() % 2 == 0){
+    <h1>Floripa foi incrivel</h1>
+  }
+  <!--@else {
+    <h1>Qualquer coisa</h1>
+}-->
   <app-lista-produtos></app-lista-produtos>
-  <h2> Angular - Aula 02</h2>
   <!--<p>{{sobre}}</p>-->
 </main>
 <app-footer></app-footer>
