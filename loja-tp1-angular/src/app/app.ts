@@ -1,8 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './core/header/header';
-import { Footer } from './core/footer/footer';
-import { Banner } from './core/banner/banner';
+import { Footer } from "./core/footer/footer";
+import { Banner } from "./core/banner/banner";
 import { QuantidadeControle } from "./shared/quantidade-controle/quantidade-controle";
 import { Produto } from './model/produto';
 import { CardProduto } from "./features/produtos/card-produto/card-produto";
@@ -15,13 +15,12 @@ import { ListaProdutos } from "./features/produtos/lista-produtos/lista-produtos
   styleUrl: './app.css'
 })
 export class App {
-
-  protected readonly title = signal('loja-tp1-angular');
+  protected readonly title = signal('Loja TP1 2026');
+  x = signal(0);
   sobre?: string;
 
-  x = signal(11);
-
-  receberSobre(msg: string):void{
+  receberSobre(msg: string): void{
     this.sobre = msg;
   }
+
 }

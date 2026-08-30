@@ -4,6 +4,6 @@ export interface Produto {
     preco: number;
     descricao: string;
     imageUrl?: string;
-    promo?: boolean; 
+    promo?: boolean;
     estado?: 'novo' | 'usado' | 'esgotado';
 }

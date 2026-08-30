@@ -2,7 +2,7 @@ import { Component, input, output, signal } from '@angular/core';
 import { Produto } from '../../../model/produto';
 import { QuantidadeControle } from "../../../shared/quantidade-controle/quantidade-controle";
 import { CurrencyPipe } from '@angular/common';
-import { DescontoPipe } from '../../../shared/pipes/desconto-pipe';
+import { DescontoPipe } from "../../../shared/pipes/desconto-pipe";
 
 @Component({
   selector: 'app-card-produto',
@@ -18,11 +18,12 @@ export class CardProduto {
   add = output<{id: number, qtd: number}>();
   view = output<number>();
 
-  onAdd(){
-    this.add.emit({id: this.produto().id, qtd: this.quantidade()})
+  onAdd() {
+    this.add.emit({id: this.produto().id, qtd: this.quantidade()});
   }
 
-  onView(){
-    this.view.emit(this.produto().id)
+  onView() {
+    this.view.emit(this.produto().id);
   }
+
 }
