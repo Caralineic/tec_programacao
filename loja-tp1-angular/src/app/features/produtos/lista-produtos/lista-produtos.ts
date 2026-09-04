@@ -1,6 +1,8 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Produto } from '../../../model/produto';
 import { CardProduto } from "../card-produto/card-produto";
+import { ProdutoService } from '../services/produto.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-lista-produtos',
@@ -10,56 +12,23 @@ import { CardProduto } from "../card-produto/card-produto";
 })
 export class ListaProdutos {
 
+  private produutoService = inject(ProdutoService);
+
+  private produtos = toSignal<Produto[], Produto[]>(this.produutoService.listar(), {initialValue: []});
+
   apenasPromo = signal(false);
 
   produtosExibidos = computed(() =>
     this.apenasPromo()
-    ? this.produtos.filter(p => p.promo)
-    : this.produtos
+    ? this.produtos().filter(p => p.promo)
+    : this.produtos()
   );
 
   altenarPromo(){
     this.apenasPromo.update(v => !v);
   }
 
-  produtos = <Produto[]>[
-    {
-      id: 1,
-      nome: 'Mounjaro',
-      preco: 1699.9,
-      descricao: 'Caneta caras demais. Deus me livre.',
-      imageUrl: 'images/moujaro.jpeg',
-      promo: false,
-      estado: 'novo'
-    },
-    {
-      id: 2,
-      nome: 'Ozempic',
-      preco: 1299.94,
-      descricao: 'Continuam caras. Deus continue me livrando.',
-      imageUrl: 'images/ozempic.jpeg',
-      promo: false,
-      estado: 'usado'
-    },
-    {
-      id: 3,
-      nome: 'Wegovy',
-      preco: 2500.00,
-      descricao: 'Misericórdia. Deus foi para Floripa?',
-      imageUrl: 'images/Wegov.png',
-      promo: true,
-      estado: 'esgotado'
-    },
-    {
-      id: 4,
-      nome: 'Novalgina',
-      preco: 17.90,
-      descricao: 'Dor de cabeça? Dor de dente? Dor de barriga? Novalgina resolve.',
-      imageUrl: 'images/noval.png',
-      promo: false,
-      estado: 'novo'
-    },
-  ];
+  
 
   onViewProduct(id: number) {
     alert(`Visualizando produto id: ${id}`);
