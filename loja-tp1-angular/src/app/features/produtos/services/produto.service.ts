@@ -1,15 +1,19 @@
 import { inject, Injectable } from '@angular/core';
 import { LoggerService } from '../../../core/services/logger/logger.service';
-import { Produto } from '../../../model/produto';
-import { delay, Observable, of } from 'rxjs';
+import { Produto, ProdutoMapper } from '../../../model/produto';
+import { catchError, delay, map, Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProdutoService {
-  private logger = inject(LoggerService); 
+  private logger = inject(LoggerService);
+  private http = inject(HttpClient);
 
-  private readonly listaMock = <Produto[]>[
+  private apiUrl = 'https://fakestoreapi.com/products';
+
+  private readonly listaMock: Produto[] = [
     {
       id: 1,
       nome: 'Mounjaro',
@@ -17,7 +21,7 @@ export class ProdutoService {
       descricao: 'Caneta caras demais. Deus me livre.',
       imageUrl: 'images/moujaro.jpeg',
       promo: false,
-      estado: 'novo'
+      estado: 'novo',
     },
     {
       id: 2,
@@ -26,36 +30,44 @@ export class ProdutoService {
       descricao: 'Continuam caras. Deus continue me livrando.',
       imageUrl: 'images/ozempic.jpeg',
       promo: false,
-      estado: 'usado'
+      estado: 'usado',
     },
     {
       id: 3,
       nome: 'Wegovy',
-      preco: 2500.00,
+      preco: 2500.0,
       descricao: 'Misericórdia. Deus foi para Floripa?',
       imageUrl: 'images/Wegov.png',
       promo: true,
-      estado: 'esgotado'
+      estado: 'esgotado',
     },
     {
       id: 4,
       nome: 'Novalgina',
-      preco: 17.90,
-      descricao: 'Dor de cabeça? Dor de dente? Dor de barriga? Novalgina resolve.',
+      preco: 17.9,
+      descricao:
+        'Dor de cabeça? Dor de dente? Dor de barriga? Novalgina resolve.',
       imageUrl: 'images/noval.png',
       promo: false,
-      estado: 'novo'
+      estado: 'novo',
     },
   ];
 
-  listar(): Observable<Produto[]>{
-    this.logger.info("[PRODUTO SERVICE] - Retornando lista de produtos")
-    return of(this.listaMock).pipe(
-      delay(250)
+  listar(): Observable<Produto[]> {
+    this.logger.info('[PRODUTO SERVICE] - Retornando lista de produtos');
+
+    return this.http.get<any[]>(this.apiUrl).pipe(
+      map(lista => lista.map(prod => ProdutoMapper.fromJson(prod))),
+      catchError(erro => {
+        this.logger.error('[PRODUTO SERVICE] - Erro ao buscar produtos');
+        return of([]);
+      })
     );
   }
 
-  getById(id: number): Observable<Produto| undefined>{
-    return of(this.listaMock.find(p => p.id == id)).pipe(delay(500));
+  getById(id: number): Observable<Produto | undefined> {
+    return of(this.listaMock.find(p => p.id === id)).pipe(
+      delay(500)
+    );
   }
 }

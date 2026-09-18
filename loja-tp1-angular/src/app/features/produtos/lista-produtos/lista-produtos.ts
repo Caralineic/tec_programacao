@@ -3,6 +3,7 @@ import { Produto } from '../../../model/produto';
 import { CardProduto } from "../card-produto/card-produto";
 import { ProdutoService } from '../services/produto.service';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-lista-produtos',
@@ -12,29 +13,32 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export class ListaProdutos {
 
-  private produutoService = inject(ProdutoService);
+  private produtoService = inject(ProdutoService);
 
-  private produtos = toSignal<Produto[], Produto[]>(this.produutoService.listar(), {initialValue: []});
+   carregando = signal(true);
+
+  private produtos = toSignal(
+    this.produtoService.listar().pipe(
+      finalize(() => this.carregando.set(false))),{initialValue: []}
+  );
 
   apenasPromo = signal(false);
 
   produtosExibidos = computed(() =>
     this.apenasPromo()
-    ? this.produtos().filter(p => p.promo)
-    : this.produtos()
+      ? this.produtos().filter(p => p.promo)
+      : this.produtos()
   );
 
-  altenarPromo(){
+  alternarPromo() {
     this.apenasPromo.update(v => !v);
   }
-
-  
 
   onViewProduct(id: number) {
     alert(`Visualizando produto id: ${id}`);
   }
 
-  onAddProduct(produto: {id: number, qtd: number}) {
+  onAddProduct(produto: { id: number, qtd: number }) {
     alert(`Adicionando produto id: ${produto.id} | Quantidade: ${produto.qtd}`);
   }
 }

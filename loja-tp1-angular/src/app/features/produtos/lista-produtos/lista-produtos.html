@@ -1,7 +1,7 @@
 <section class="catalogo">
     <header class="barradetarefas">
         <h2>Catálogo</h2>
-        <button class="btn sopromo" [class.ativo]="apenasPromo()" (click)="altenarPromo()">
+        <button class="btn sopromo" [class.ativo]="apenasPromo()" (click)="alternarPromo()">
             @if (apenasPromo()) {
                 Mostrar Todos
             } @else {
@@ -10,7 +10,10 @@
         </button>
     </header>
 
-    @if (produtosExibidos().length === 0) {
+    @if(carregando()){
+        <p>Carregando produtos...</p>
+    }
+    @else if (produtosExibidos().length === 0) {
         <p class="vazio">Nenhum produto encontrado.</p>
     }
     @else {
