@@ -13,46 +13,6 @@ export class ProdutoService {
 
   private apiUrl = 'https://fakestoreapi.com/products';
 
-  private readonly listaMock: Produto[] = [
-    {
-      id: 1,
-      nome: 'Mounjaro',
-      preco: 1699.9,
-      descricao: 'Caneta caras demais. Deus me livre.',
-      imageUrl: 'images/moujaro.jpeg',
-      promo: false,
-      estado: 'novo',
-    },
-    {
-      id: 2,
-      nome: 'Ozempic',
-      preco: 1299.94,
-      descricao: 'Continuam caras. Deus continue me livrando.',
-      imageUrl: 'images/ozempic.jpeg',
-      promo: false,
-      estado: 'usado',
-    },
-    {
-      id: 3,
-      nome: 'Wegovy',
-      preco: 2500.0,
-      descricao: 'Misericórdia. Deus foi para Floripa?',
-      imageUrl: 'images/Wegov.png',
-      promo: true,
-      estado: 'esgotado',
-    },
-    {
-      id: 4,
-      nome: 'Novalgina',
-      preco: 17.9,
-      descricao:
-        'Dor de cabeça? Dor de dente? Dor de barriga? Novalgina resolve.',
-      imageUrl: 'images/noval.png',
-      promo: false,
-      estado: 'novo',
-    },
-  ];
-
   listar(): Observable<Produto[]> {
     this.logger.info('[PRODUTO SERVICE] - Retornando lista de produtos');
 
@@ -65,9 +25,13 @@ export class ProdutoService {
     );
   }
 
-  getById(id: number): Observable<Produto | undefined> {
-    return of(this.listaMock.find(p => p.id === id)).pipe(
-      delay(500)
-    );
+  getById() {
+    
+  
+  }
+
+
+  criar(produto: Produto):Observable<any>{
+    return this.http.post<any>(this.apiUrl,ProdutoMapper.toJson(produto));
   }
 }
