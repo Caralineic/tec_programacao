@@ -4,6 +4,7 @@ import { CardProduto } from "../card-produto/card-produto";
 import { ProdutoService } from '../services/produto.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lista-produtos',
@@ -11,10 +12,12 @@ import { finalize } from 'rxjs';
   templateUrl: './lista-produtos.html',
   styleUrl: './lista-produtos.css',
 })
+
+
 export class ListaProdutos {
 
   private produtoService = inject(ProdutoService);
-
+  private router = inject(Router);
    carregando = signal(true);
 
   private produtos = toSignal(
@@ -40,5 +43,9 @@ export class ListaProdutos {
 
   onAddProduct(produto: { id: number, qtd: number }) {
     alert(`Adicionando produto id: ${produto.id} | Quantidade: ${produto.qtd}`);
+  }
+
+  onCreateProduct(rota: string){
+    this.router.navigateByUrl(rota);
   }
 }

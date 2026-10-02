@@ -21,17 +21,17 @@ export class ProdutoFrom {
   mensagem = signal('');
   novaCategoria = signal('');
 
-  private produtos = toSignal(this.prododutoService.listar(), {initialValue: []});
+  private produtos = toSignal(this.prododutoService.listar(), { initialValue: [] });
 
   categorias = computed(() => {
     const lista = this.produtos().map(p => p.categoria).filter(Boolean);
     const unicas = Array.from(new Set(lista));
     return [...unicas, 'Outra'];
-  })
+  });
 
   categoriaSelecionada = signal('');
 
-  mostrarNovacategoria  = computed(() => this.categoriaSelecionada() === 'Outra');
+  mostrarNovaCategoria = computed(() => this.categoriaSelecionada() === 'Outra');
 
   novoProduto: Produto = {
     id: 0,
@@ -40,38 +40,38 @@ export class ProdutoFrom {
     descricao: '',
     imageUrl: '',
     categoria: '',
-  }
+    promo: false,
+  };
 
-
-  onSubmit(form: NgForm){
-    if(form.invalid){
-      this.mensagem.set("Prencha todos os campos");
+  onSubmit(form: NgForm) {
+    if (form.invalid) {
+      this.mensagem.set('Preencha todos os campos');
       return;
     }
 
-    this.novoProduto.categoria = this.categoriaSelecionada() =='Outra'
-    ? this.novaCategoria()
-    :this.categoriaSelecionada();
+    this.novoProduto.categoria =
+      this.categoriaSelecionada() === 'Outra'
+        ? this.novaCategoria()
+        : this.categoriaSelecionada();
 
     this.enviando.set(true);
-    this.mensagem.set("Enviando Produto...");
+    this.mensagem.set('Enviando produto...');
 
     this.prododutoService.criar(this.novoProduto).pipe(
       finalize(() => this.enviando.set(false))
-    ).subscribe(
-      {
-        next: (resp) => {
-          this.mensagem.set("Produto cadastrado com sucesso");
-          form.resetForm();
-          setTimeout(() => this.router.navigateByUrl('/produtos'),1200);
-        },
-        error: (err) =>{
-          this.mensagem.set("Erro ao criar produto: "+err)
-        }
-      }
-    )
+    ).subscribe({
+      next: () => {
+        this.mensagem.set('Produto cadastrado com sucesso');
+        form.resetForm();
+        setTimeout(() => this.router.navigateByUrl('/produtos'), 1200);
+      },
+      error: (err) => {
+        this.mensagem.set('Erro ao criar produto: ' + err);
+      },
+    });
   }
 
+  cancelar() {
+    this.router.navigateByUrl('/produtos');
+  }
 }
-
-
