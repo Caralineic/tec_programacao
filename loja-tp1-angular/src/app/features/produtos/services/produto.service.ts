@@ -25,10 +25,15 @@ export class ProdutoService {
     );
   }
 
-  getById() {
-    
-  
-  }
+getById(id: number): Observable<Produto | undefined> {
+  return this.http.get<any>(`${this.apiUrl}/${id}`).pipe(
+    map(prod => prod ? ProdutoMapper.fromJson(prod) : undefined),
+    catchError(erro => {
+      this.logger.error('[PRODUTO SERVICE] - Erro ao buscar produto por ID', erro);
+      return of(undefined);
+    })
+  );
+}
 
 
   criar(produto: Produto):Observable<any>{
